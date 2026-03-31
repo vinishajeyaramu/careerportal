@@ -7,7 +7,7 @@ import {
   FiSearch,
   FiUsers,
 } from "react-icons/fi";
-import JobSearchBoard from "../components/JobSearchBoard";
+import JobSearchBoard from "../Components/JobSearchBoard";
 
 const Home = () => {
   return (

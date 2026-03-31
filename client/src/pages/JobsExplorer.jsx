@@ -1,4 +1,4 @@
-import JobSearchBoard from "../components/JobSearchBoard";
+import JobSearchBoard from "../Components/JobSearchBoard";
 
 const JobsExplorer = () => {
   return (
