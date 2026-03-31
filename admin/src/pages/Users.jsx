@@ -75,7 +75,7 @@ const AddUsers = ({ onClose, onSubmit, editData }) => {
   };
 
   return (
-    <div className="p-6 border bg-white rounded-lg shadow-md max-w-lg mx-auto">
+    <div className="admin-card max-w-lg rounded-[28px] p-6 mx-auto">
       <form onSubmit={handleSubmit}>
         <label className="block mb-2 text-lg font-semibold text-gray-700">
           {editData ? "Edit User" : "Add User"}{" "}
@@ -87,7 +87,7 @@ const AddUsers = ({ onClose, onSubmit, editData }) => {
           placeholder="Enter Name"
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
-          className="border p-2 rounded-md w-full mb-4 outline-none focus:ring-2 focus:ring-blue-300"
+          className="admin-input mb-4"
         />
         {errors.userName && (
           <p className="text-red-500 text-sm">{errors.userName}</p>
@@ -97,7 +97,7 @@ const AddUsers = ({ onClose, onSubmit, editData }) => {
           placeholder="Enter Email"
           value={userEmail}
           onChange={(e) => setUserEmail(e.target.value)}
-          className="border p-2 rounded-md w-full mb-4 outline-none focus:ring-2 focus:ring-blue-300"
+          className="admin-input mb-4"
         />
         {errors.userEmail && (
           <p className="text-red-500 text-sm">{errors.userEmail}</p>
@@ -107,22 +107,22 @@ const AddUsers = ({ onClose, onSubmit, editData }) => {
           placeholder="Enter Password"
           value={userCredit}
           onChange={(e) => setUserCredit(e.target.value)}
-          className="border p-2 rounded-md w-full mb-4 outline-none focus:ring-2 focus:ring-blue-300"
+          className="admin-input mb-4"
         />
         {errors.userCredit && (
           <p className="text-red-500 text-sm">{errors.userCredit}</p>
         )}
-        <div className="flex gap-3 justify-end">
+        <div className="flex flex-wrap gap-3 justify-end">
           <button
             type="submit"
-            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+            className="admin-btn admin-btn-primary"
           >
             {editData ? "Update" : "Submit"}
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+            className="admin-btn admin-btn-secondary"
           >
             Close
           </button>
@@ -191,17 +191,20 @@ const Users = () => {
   };
 
   return (
-    <main className="flex flex-col items-center w-full px-6 ">
+    <main className="space-y-6">
       <ToastContainer />
-      <div className="w-full  bg-white rounded-lg shadow-md p-6">
-        <div className="flex justify-between items-center pb-4 border-b">
-          <h1 className="text-2xl font-bold text-gray-700">Users</h1>
+      <div className="admin-panel rounded-[32px] p-6">
+        <div className="flex flex-col gap-4 border-b border-[var(--admin-line)] pb-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-[var(--admin-ink)]">Users</h1>
+            <p className="mt-2 text-sm text-[var(--admin-muted)]">Manage admin access and credential visibility more clearly.</p>
+          </div>
           <button
             onClick={() => {
               setEditData(null);
               setUserForm(true);
             }}
-            className="text-sm font-medium border bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            className="admin-btn admin-btn-primary"
           >
             + Add User
           </button>
@@ -215,9 +218,9 @@ const Users = () => {
           />
         )}
 
-        <div className="mt-6 overflow-x-auto">
+        <div className="admin-table-wrap mt-6 overflow-x-auto">
           <table className="w-full min-w-full border-collapse">
-            <thead className="bg-gray-100">
+            <thead className="bg-[#f7f2eb]">
               <tr className="text-sm font-semibold text-gray-700">
                 <th className="py-3 px-4 border text-start">S.No</th>
                 <th className="py-3 px-4 border text-start">User Name</th>
@@ -242,10 +245,7 @@ const Users = () => {
                           ? user.password
                           : "•".repeat(8)}
                       </span>
-                      <button
-                        onClick={() => togglePasswordVisibility(user.id)}
-                        className="ml-2"
-                      >
+                      <button onClick={() => togglePasswordVisibility(user.id)} className="admin-icon-btn ml-2 text-[var(--admin-accent)]">
                         {visiblePasswords[user.id] ? (
                           <EyeOff size={18} />
                         ) : (
@@ -253,7 +253,7 @@ const Users = () => {
                         )}
                       </button>
                     </td>
-                    <td className="py-1 px-1 space-x-3 text-center">
+                    <td className="py-1 px-1 text-center">
                       {/* <button
                         onClick={() => handleEdit(user)}
                         className="text-green-600 hover:text-green-800"
@@ -262,7 +262,7 @@ const Users = () => {
                       </button> */}
                       <button
                         onClick={() => handleDelete(user.id)}
-                        className="text-red-600 hover:text-red-800"
+                        className="admin-icon-btn text-[var(--admin-danger)]"
                       >
                         <Trash2 size={20} />
                       </button>

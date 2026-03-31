@@ -1,6 +1,160 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --admin-bg: #f3efe8;
+  --admin-surface: rgba(255, 252, 247, 0.82);
+  --admin-line: rgba(40, 33, 25, 0.1);
+  --admin-ink: #1f1a17;
+  --admin-muted: #6f665e;
+  --admin-accent: #1c5d99;
+  --admin-accent-soft: #d8ebff;
+  --admin-accent-deep: #143d64;
+  --admin-success: #12715b;
+  --admin-danger: #b9382f;
+  --admin-warning: #ce7a12;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Outfit", sans-serif;
+  color: var(--admin-ink);
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(28, 93, 153, 0.14), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(185, 56, 47, 0.12), transparent 26%),
+    var(--admin-bg);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Sora", sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.admin-panel {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-line);
+  box-shadow: 0 18px 48px rgba(51, 37, 24, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.admin-card {
+  border: 1px solid rgba(28, 93, 153, 0.1);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(245, 241, 235, 0.92));
+  box-shadow: 0 16px 36px rgba(36, 31, 26, 0.08);
+}
+
+.admin-input {
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(31, 26, 23, 0.12);
+  background: rgba(255, 255, 255, 0.96);
+  padding: 0.9rem 1rem;
+  font-size: 0.95rem;
+  color: var(--admin-ink);
+  outline: none;
+  transition: 180ms ease;
+}
+
+.admin-input:focus {
+  border-color: rgba(28, 93, 153, 0.55);
+  box-shadow: 0 0 0 4px rgba(28, 93, 153, 0.12);
+}
+
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 18px;
+  padding: 0.75rem 1.15rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: 180ms ease;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.admin-btn-primary {
+  background: linear-gradient(135deg, var(--admin-accent), var(--admin-accent-deep));
+  color: white;
+}
+
+.admin-btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.admin-btn-secondary {
+  background: white;
+  color: var(--admin-ink);
+  border-color: var(--admin-line);
+}
+
+.admin-btn-secondary:hover {
+  border-color: rgba(28, 93, 153, 0.35);
+  color: var(--admin-accent-deep);
+}
+
+.admin-btn-success {
+  background: rgba(18, 113, 91, 0.14);
+  color: var(--admin-success);
+  border-color: rgba(18, 113, 91, 0.18);
+}
+
+.admin-btn-danger {
+  background: rgba(185, 56, 47, 0.14);
+  color: var(--admin-danger);
+  border-color: rgba(185, 56, 47, 0.18);
+}
+
+.admin-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 9999px;
+  border: 1px solid var(--admin-line);
+  background: white;
+  transition: 180ms ease;
+}
+
+.admin-icon-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(34, 30, 24, 0.1);
+}
+
+.admin-table-wrap {
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid var(--admin-line);
+  background: rgba(255, 255, 255, 0.92);
+  max-width: 100%;
+}
+
+.admin-page-shell {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.admin-modal-shell {
+  width: min(100% - 2rem, 980px);
+  max-width: 980px;
+  max-height: min(88vh, 760px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}

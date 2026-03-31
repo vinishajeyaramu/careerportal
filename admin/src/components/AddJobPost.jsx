@@ -260,7 +260,7 @@ function AddJob({handleOpen,setOpen,isAdd, job, setJob, setIsAdd ,onSuccess}) {
         size="lg"
         open={open}
         handler={handleOpen}
-        className="p-4  scrollbar scrollbar-thumb-sky-700 scrollbar-track-sky-300 h-[600px] overflow-y-scroll"
+        className="admin-modal-shell p-4 scrollbar scrollbar-thumb-sky-700 scrollbar-track-sky-300"
       >
         <DialogHeader className="relative font-Josefin  block space-y-4 pb-6">
           <Typography className="font-Josefin" variant="h4" color="blue-gray">
@@ -714,7 +714,7 @@ function AddJob({handleOpen,setOpen,isAdd, job, setJob, setIsAdd ,onSuccess}) {
           </div>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={handleSubmit} className="ml-auto">
+          <Button onClick={handleSubmit} className="ml-auto !rounded-full !bg-[#1c5d99] !px-5 !py-3 !text-white shadow-none">
             submit
           </Button>
         </DialogFooter>

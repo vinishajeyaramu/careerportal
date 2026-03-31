@@ -58,7 +58,7 @@ const AddLocation = ({ onClose, onSubmit, editData, existingLocations }) => {
   };
 
   return (
-    <div className="p-6 border bg-gray-100 rounded-lg shadow-md">
+    <div className="admin-card rounded-[28px] p-6">
       <h2 className="text-lg font-semibold mb-4">
         {editData ? "Edit Location" : "Add Location"}
       </h2>
@@ -69,22 +69,22 @@ const AddLocation = ({ onClose, onSubmit, editData, existingLocations }) => {
           placeholder="Enter Location Name"
           value={locationName}
           onChange={(e) => setLocationName(e.target.value)}
-          className="border p-2 rounded-md w-full outline-none"
+          className="admin-input"
         />
         {errors.locationName && (
           <p className="text-red-500 text-sm">{errors.locationName}</p>
         )}
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           <button
             type="submit"
-            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+            className="admin-btn admin-btn-primary"
           >
             {editData ? "Update" : "Submit"}
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+            className="admin-btn admin-btn-secondary"
           >
             Close
           </button>
@@ -162,18 +162,20 @@ const Location = () => {
   };
 
   return (
-    <main className="flex-grow px-6 bg-gray-100">
+    <main className="space-y-6">
       <ToastContainer />
-      <div className="bg-white p-6 rounded-xl shadow-md w-full">
-        {/* Header Section */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Locations</h1>
+      <div className="admin-panel rounded-[32px] p-6">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-[var(--admin-ink)]">Locations</h1>
+            <p className="mt-2 text-sm text-[var(--admin-muted)]">Maintain the list of places your team hires from.</p>
+          </div>
           <button
             onClick={() => {
               setEditData(null);
               setLocationForm(true);
             }}
-            className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 px-4 py-2 rounded-md"
+            className="admin-btn admin-btn-primary"
           >
             <Plus size={18} /> Add Location
           </button>
@@ -190,9 +192,9 @@ const Location = () => {
         )}
 
         {/* Locations Table */}
-        <div className="overflow-x-auto mt-6">
-          <table className="w-full border-collapse bg-white shadow-md rounded-lg">
-            <thead className="bg-gray-200 text-gray-800">
+        <div className="admin-table-wrap mt-6 overflow-x-auto">
+          <table className="w-full border-collapse bg-white">
+            <thead className="bg-[#f7f2eb] text-gray-800">
               <tr className="text-left text-sm font-semibold">
                 <th className="py-3 px-4 border">S.No</th>
                 <th className="py-3 px-4 border">Location</th>
@@ -208,19 +210,21 @@ const Location = () => {
                   >
                     <td className="py-3 px-4">{index + 1}</td>
                     <td className="py-3 px-4">{location.location_title}</td>
-                    <td className="py-3 px-4 flex justify-center gap-4">
+                    <td className="py-3 px-4">
+                      <div className="flex justify-center gap-3">
                       <button
                         onClick={() => handleEdit(location)}
-                        className="text-green-600 hover:text-green-800"
+                        className="admin-icon-btn text-[var(--admin-success)]"
                       >
                         <Edit size={20} />
                       </button>
                       <button
                         onClick={() => handleDelete(location.location_id)}
-                        className="text-red-600 hover:text-red-800"
+                        className="admin-icon-btn text-[var(--admin-danger)]"
                       >
                         <Trash2 size={20} />
                       </button>
+                      </div>
                     </td>
                   </tr>
                 ))

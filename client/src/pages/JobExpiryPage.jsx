@@ -1,30 +1,25 @@
 import { Link } from "react-router-dom";
-import expiredImage from "../assets/Expired.svg"; // Make sure to replace this with the actual path to your expired image
 
 const JobExpiryPage = () => {
   return (
-    <div className="h-screen flex flex-col lg:flex-row gap-5  items-center justify-center lg:justify-between bg-gray-100">
-      <img
-        src={expiredImage}
-        alt="Job Expired"
-        className="w-1/2 h-[400px] mb-8"
-      />
-      <div className=" flex flex-col items-center justify-center lg:items-start gap-5 px-4">
-        {" "}
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
-          Job Post Expired
-        </h1>
-        <p className="text-gray-600 mb-8">
-          The job post you are looking for is no longer available. It might have
-          been removed or is no longer active.
+    <main className="portal-shell flex min-h-[calc(100vh-88px)] items-center justify-center py-12">
+      <section className="glass-panel max-w-3xl rounded-[36px] p-10 text-center">
+        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--accent-deep)]">
+          Role unavailable
         </p>
-        <Link to="/">
-          <button className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
-            Back to Home
-          </button>
+        <h1 className="mt-4 text-5xl font-bold">This opening is no longer active.</h1>
+        <p className="mt-5 text-base leading-8 text-[var(--muted)]">
+          The job may have expired, been paused, or already been filled. The portal will
+          always redirect candidates away from inactive postings.
+        </p>
+        <Link
+          to="/"
+          className="mt-8 inline-flex rounded-full bg-[var(--ink)] px-6 py-3 text-sm font-semibold text-white"
+        >
+          Browse active roles
         </Link>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

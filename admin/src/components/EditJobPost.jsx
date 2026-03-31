@@ -336,7 +336,7 @@ const [errors, setErrors] = useState({});
         size="lg"
         open={open}
         handler={handleOpen}
-        className="p-4  scrollbar scrollbar-thumb-sky-700 scrollbar-track-sky-300 h-[600px] overflow-y-scroll"
+        className="admin-modal-shell p-4 scrollbar scrollbar-thumb-sky-700 scrollbar-track-sky-300"
       >
         <DialogHeader className="relative font-Josefin  block space-y-4 pb-6">
           <Typography className="font-Josefin" variant="h4" color="blue-gray">
@@ -743,10 +743,10 @@ const [errors, setErrors] = useState({});
           </div>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={handleSubmit} className="ml-auto">
+          <Button onClick={handleSubmit} className="ml-auto !rounded-full !bg-[#1c5d99] !px-5 !py-3 !text-white shadow-none">
             Update
           </Button>
-          <Button onClick={handleCancel} className="ml-10 ">
+          <Button onClick={handleCancel} className="ml-4 !rounded-full !bg-[#efe8df] !px-5 !py-3 !text-[#1f1a17] shadow-none">
             Cancel
           </Button>
         </DialogFooter>

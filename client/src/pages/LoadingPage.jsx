@@ -1,9 +1,13 @@
 const LoadingPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4"></div>
-      <p className="text-lg text-gray-700">Loading...</p>
-    </div>
+    <main className="portal-shell flex min-h-[calc(100vh-88px)] items-center justify-center py-12">
+      <div className="glass-panel flex flex-col items-center rounded-[32px] px-10 py-12">
+        <div className="portal-loader" />
+        <p className="mt-5 text-sm font-semibold uppercase tracking-[0.28em] text-[var(--accent-deep)]">
+          Loading portal
+        </p>
+      </div>
+    </main>
   );
 };
 

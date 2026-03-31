@@ -1,126 +1,6 @@
-// import { useState } from "react";
-// import axios from "axios";
-// import { useNavigate } from "react-router-dom";
-
-// const loginUrl = import.meta.env.VITE_LOGIN_URL;
-
-// const Login = () => {
-//   const navigate = useNavigate();
-//   const [values, setValues] = useState({
-//     email: "",
-//     password: "",
-//   });
-//   const [showPassword, setShowPassword] = useState(false);
-
-//   const handleChanges = (e) => {
-//     setValues({ ...values, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const response = await axios.post(loginUrl, values);
-//       console.log(response.data)
-//       console.log(response);
-//       if (response.status === 200) {
-//         localStorage.setItem("token", response.data.token);
-//         localStorage.setItem("email", response.data.user.email);
-//         localStorage.setItem("username", response.data.user.username);
-//         navigate("/");
-//       }
-//     } catch (error) {
-//       console.error("Login error:", error);
-//       alert(
-//         "Login failed. Please check your username and password and try again."
-//       );
-//     }
-//   };
-
-//   return (
-//     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-//       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-//         {/* Logo */}
-//         <div className="flex justify-center">
-//           <img
-//             src="https://via.placeholder.com/150x50?text=BeautyBarn+Logo" // Replace with actual logo URL
-//             alt="BeautyBarn Logo"
-//             className="h-12"
-//           />
-//         </div>
-
-//         {/* Title */}
-//         <h2 className="text-center text-2xl font-semibold text-gray-800 mt-4">
-//           Login to SuperLabs JobPost
-//         </h2>
-
-//         {/* Form */}
-//         <form onSubmit={handleSubmit} className="mt-6">
-//           <div className="mb-4">
-//             <label
-//               htmlFor="email"
-//               className="block text-gray-700 text-sm font-medium mb-2"
-//             >
-//               Email
-//             </label>
-//             <input
-//               type="email"
-//               id="email"
-//               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-//               placeholder="Email"
-//               name="email"
-//               onChange={handleChanges}
-//             />
-//           </div>
-
-//           <div className="mb-4 relative">
-//             <label
-//               htmlFor="password"
-//               className="block text-gray-700 text-sm font-medium mb-2"
-//             >
-//               Password
-//             </label>
-//             <input
-//               type={showPassword ? "text" : "password"}
-//               id="password"
-//               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-//               placeholder="Password"
-//               name="password"
-//               onChange={handleChanges}
-//             />
-//             {/* Toggle Password Visibility */}
-//             <button
-//               type="button"
-//               className="absolute right-3 top-10 text-gray-500"
-//               onClick={() => setShowPassword(!showPassword)}
-//             >
-//               {showPassword ? "🙈" : "👁"}
-//             </button>
-//           </div>
-
-//           {/* Submit Button */}
-//           <button
-//             type="submit"
-//             className="w-full bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-700 transition"
-//           >
-//             Continue
-//           </button>
-
-//           {/* Forgot Password */}
-//           {/* <p className="text-center text-sm text-gray-600 mt-4">
-//             <a href="#" className="text-pink-500 hover:underline">
-//               Forgot Password?
-//             </a>
-//           </p> */}
-//         </form>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Login;
-
 import { useState } from "react";
 import axios from "axios";
+import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const loginUrl = import.meta.env.VITE_LOGIN_URL;
@@ -128,28 +8,19 @@ const forgotPasswordUrl = import.meta.env.VITE_FORGOT_PASSWORD_URL;
 
 const Login = () => {
   const navigate = useNavigate();
-  const [values, setValues] = useState({
-    email: "",
-    password: "",
-  });
+  const [values, setValues] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
 
-  const handleChanges = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+  const handleChanges = (event) => {
+    setValues({ ...values, [event.target.name]: event.target.value });
   };
 
-  const handleForgotPasswordChange = (e) => {
-    setForgotPasswordEmail(e.target.value);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
       const response = await axios.post(loginUrl, values);
-      console.log(response.data);
-      console.log(response);
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("email", response.data.user.email);
@@ -158,14 +29,12 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Login error:", error);
-      alert(
-        "Login failed. Please check your username and password and try again."
-      );
+      alert("Login failed. Please check your username and password and try again.");
     }
   };
 
-  const handleForgotPasswordSubmit = async (e) => {
-    e.preventDefault();
+  const handleForgotPasswordSubmit = async (event) => {
+    event.preventDefault();
     try {
       const response = await axios.post(forgotPasswordUrl, { email: forgotPasswordEmail });
       if (response.status === 200) {
@@ -179,120 +48,113 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        {/* Logo */}
-        <div className="flex justify-center">
-          <img
-            src="https://via.placeholder.com/150x50?text=BeautyBarn+Logo" // Replace with actual logo URL
-            alt="BeautyBarn Logo"
-            className="h-12"
-          />
+    <div className="flex min-h-screen items-center justify-center px-4 py-10">
+      <div className="grid w-full max-w-5xl overflow-hidden rounded-[36px] border border-[var(--admin-line)] bg-white shadow-2xl lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="bg-[linear-gradient(145deg,#17324d,#245a87)] p-10 text-white">
+          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-blue-100">Admin login</p>
+          <h1 className="mt-4 text-4xl font-bold">Career portal control center.</h1>
+          <p className="mt-5 max-w-md text-sm leading-8 text-blue-100">
+            Manage roles, candidates, categories, locations, and hiring operations from one
+            cleaner admin workspace.
+          </p>
+
+          <div className="mt-10 space-y-4">
+            {[
+              "Role and candidate management",
+              "Express + PostgreSQL powered flow",
+              "Improved visibility across admin actions",
+            ].map((item) => (
+              <div key={item} className="rounded-2xl border border-white/10 bg-white/10 px-4 py-4 text-sm">
+                {item}
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Title */}
-        <h2 className="text-center text-2xl font-semibold text-gray-800 mt-4">
-          Login to SuperLabs JobPost
-        </h2>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="mt-6">
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-gray-700 text-sm font-medium mb-2"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-              placeholder="Email"
-              name="email"
-              onChange={handleChanges}
-            />
-          </div>
-
-          <div className="mb-4 relative">
-            <label
-              htmlFor="password"
-              className="block text-gray-700 text-sm font-medium mb-2"
-            >
-              Password
-            </label>
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-              placeholder="Password"
-              name="password"
-              onChange={handleChanges}
-            />
-            {/* Toggle Password Visibility */}
-            <button
-              type="button"
-              className="absolute right-3 top-10 text-gray-500"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "🙈" : "👁"}
-            </button>
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-700 transition"
-          >
-            Continue
-          </button>
-
-          {/* Forgot Password */}
-          <p className="text-center text-sm text-gray-600 mt-4">
-            <a
-              href="#"
-              className="text-pink-500 hover:underline"
-              onClick={() => setShowForgotPassword(true)}
-            >
-              Forgot Password?
-            </a>
+        <div className="p-8 sm:p-10">
+          <h2 className="text-3xl font-bold text-[var(--admin-ink)]">Sign in</h2>
+          <p className="mt-2 text-sm text-[var(--admin-muted)]">
+            Use your admin credentials to access the panel.
           </p>
-        </form>
-      </div>
 
-      {/* Forgot Password Modal */}
-      {showForgotPassword && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
-            <h2 className="text-center text-2xl font-semibold text-gray-800 mb-4">
-              Forgot Password
-            </h2>
-            <form onSubmit={handleForgotPasswordSubmit}>
-              <div className="mb-4">
-                <label
-                  htmlFor="forgotPasswordEmail"
-                  className="block text-gray-700 text-sm font-medium mb-2"
-                >
-                  Email
-                </label>
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+            <div>
+              <label htmlFor="email" className="mb-2 block text-sm font-semibold text-[var(--admin-muted)]">
+                Email
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--admin-muted)]" size={18} />
                 <input
+                  id="email"
                   type="email"
-                  id="forgotPasswordEmail"
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                  placeholder="Enter your email"
-                  value={forgotPasswordEmail}
-                  onChange={handleForgotPasswordChange}
+                  name="email"
+                  placeholder="Enter your admin email"
+                  onChange={handleChanges}
+                  className="admin-input pl-11"
                 />
               </div>
-              <button
-                type="submit"
-                className="w-full bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-700 transition"
-              >
-                Send Reset Link
+            </div>
+
+            <div>
+              <label htmlFor="password" className="mb-2 block text-sm font-semibold text-[var(--admin-muted)]">
+                Password
+              </label>
+              <div className="relative">
+                <LockKeyhole className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--admin-muted)]" size={18} />
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Enter your password"
+                  onChange={handleChanges}
+                  className="admin-input pl-11 pr-12"
+                />
+                <button
+                  type="button"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--admin-muted)]"
+                  onClick={() => setShowPassword((value) => !value)}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" className="admin-btn admin-btn-primary w-full">
+              Continue to dashboard
+            </button>
+
+            <button
+              type="button"
+              className="text-sm font-semibold text-[var(--admin-accent)]"
+              onClick={() => setShowForgotPassword(true)}
+            >
+              Forgot password?
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {showForgotPassword && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4">
+          <div className="w-full max-w-md rounded-[28px] bg-white p-8 shadow-2xl">
+            <h2 className="text-2xl font-bold">Reset password</h2>
+            <p className="mt-2 text-sm text-[var(--admin-muted)]">
+              Enter your email to receive a reset link.
+            </p>
+            <form onSubmit={handleForgotPasswordSubmit} className="mt-6 space-y-4">
+              <input
+                type="email"
+                value={forgotPasswordEmail}
+                onChange={(event) => setForgotPasswordEmail(event.target.value)}
+                className="admin-input"
+                placeholder="Enter your email"
+              />
+              <button type="submit" className="admin-btn admin-btn-primary w-full">
+                Send reset link
               </button>
               <button
                 type="button"
-                className="w-full mt-4 bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition"
+                className="admin-btn admin-btn-secondary w-full"
                 onClick={() => setShowForgotPassword(false)}
               >
                 Cancel

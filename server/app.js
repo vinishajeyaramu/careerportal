@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import authRouter from "./router/authRoutes.js";
 import candidatesRouter from "./router/candidatesRoutes.js";
 import router from "./router/router.js";
+import { bootstrapDatabase } from "./config/bootstrap.js";
 
 const app = express();
 
@@ -20,6 +21,16 @@ app.use("/auth", authRouter);
 app.use("/candidates", candidatesRouter);
 app.use("/api/v1", router);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
-});
+const startServer = async () => {
+  try {
+    await bootstrapDatabase();
+    app.listen(process.env.PORT, () => {
+      console.log(`Server is running on port ${process.env.PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+};
+
+startServer();

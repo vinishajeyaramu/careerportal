@@ -1,198 +1,158 @@
-// import { useContext, useEffect, useState } from "react";
-// import { FaUserAlt } from "react-icons/fa";
-
-// // import { Chart as ChartJS } from "chart.js/auto";
-// // import { Bar, Doughnut, Line } from "react-chartjs-2";
-// import axios from "axios";
-// import { ThemeContext } from "../App";
-
-// const candidatesUrl = import.meta.env.VITE_CANDIDATES_URL
-
-// export default function Dashboard() {
-//   const { job } = useContext(ThemeContext);
-
-//   console.log(job);
-
-//   const [candidates, setCandidates] = useState([]);
-
-//   useEffect(() => {
-//     fetchCandidates();
-//   }, []);
-
-//   const fetchCandidates = async () => {
-//     const response = await axios.get(candidatesUrl);
-//     setCandidates(response.data);
-//   };
-//   const name = localStorage.getItem("username")
-
-//   return (
-//     <div className="p-6">
-//       <div className="flex justify-between items-center">
-//         <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
-//         <p className="absolute top-7 right-7 bg-blue-100 p-2 rounded-lg flex gap-2"><FaUserAlt className="text-gray-700" />{name}</p>
-//       </div>
-//       <div className="grid grid-cols-2 gap-6">
-//         <div className="p-4 bg-blue-100 rounded-lg shadow">
-//           <h3 className="text-lg font-semibold">Total Jobs Posted </h3>
-//           <p className="text-2xl">{job?.length}</p>
-//         </div>
-//         <div className="p-4 bg-green-100 rounded-lg shadow">
-//           <h3 className="text-lg font-semibold">Total Candidates</h3>
-//           <p className="text-2xl">{candidates?.length}</p>
-//         </div>
-//         <div className="p-4 bg-yellow-100 rounded-lg shadow">
-//           <h3 className="text-lg font-semibold">Active Jobs</h3>
-//           <p className="text-2xl">
-//             {job?.filter((j) => j.job_status === "Active").length}
-//           </p>
-//         </div>
-//         <div className="p-4 bg-red-100 rounded-lg shadow">
-//           <h3 className="text-lg font-semibold">Inactive Jobs</h3>
-//           <p className="text-2xl">
-//             {" "}
-//             {job?.filter((j) => j.job_status === "Inactive").length}
-//           </p>
-//         </div>
-//       </div>
-//       {/* <div className=" flex flex-col gap-5">
-//         <h1 className=" text-2xl font-bold">Graphs</h1>
-//         <div className=" flex gap-2 flex-wrap items-center justify-between ">
-//           <div className=" w-[400px] h-[400px] flex items-center justify-center">
-//             {" "}
-//             <Bar
-//               data={{
-//                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-//                 datasets: [
-//                   {
-//                     label: "Job Applications",
-//                     backgroundColor: "rgba(75, 192, 192, 0.2)",
-//                     borderColor: "rgba(75, 192, 192, 1)",
-//                     borderWidth: 1,
-//                     data: [65, 59, 80, 81, 56, 55, 40],
-//                   },
-//                   {
-//                     label: "Job Interviews",
-//                     backgroundColor: "rgba(255, 99, 132, 0.2)",
-//                     borderColor: "rgba(255, 99, 132, 1)",
-//                     borderWidth: 1,
-//                     data: [28, 48, 40, 19, 86, 27, 90],
-//                   },
-//                 ],
-//               }}
-//             />
-//           </div>
-
-//           <div className=" w-[400px] h-[400px] flex items-center justify-center ">
-//             {" "}
-//             <Doughnut
-//               data={{
-//                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-//                 datasets: [
-//                   {
-//                     label: "Job Applications",
-//                     backgroundColor: "rgba(75, 192, 192, 0.2)",
-//                     borderColor: "rgba(75, 192, 192, 1)",
-//                     borderWidth: 1,
-//                     data: [65, 59, 80, 81, 56, 55, 40],
-//                   },
-//                   {
-//                     label: "Job Interviews",
-//                     backgroundColor: "rgba(255, 99, 132, 0.2)",
-//                     borderColor: "rgba(255, 99, 132, 1)",
-//                     borderWidth: 1,
-//                     data: [28, 48, 40, 19, 86, 27, 90],
-//                   },
-//                 ],
-//               }}
-//             />
-//           </div>
-
-//           <div className=" w-[400px] h-[400px] flex items-center justify-center ">
-//             {" "}
-//             <Line
-//               data={{
-//                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-//                 datasets: [
-//                   {
-//                     label: "Job Applications",
-//                     backgroundColor: "rgba(75, 192, 192, 0.2)",
-//                     borderColor: "rgba(75, 192, 192, 1)",
-//                     borderWidth: 1,
-//                     data: [65, 59, 80, 81, 56, 55, 40],
-//                   },
-//                   {
-//                     label: "Job Interviews",
-//                     backgroundColor: "rgba(255, 99, 132, 0.2)",
-//                     borderColor: "rgba(255, 99, 132, 1)",
-//                     borderWidth: 1,
-//                     data: [28, 48, 40, 19, 86, 27, 90],
-//                   },
-//                 ],
-//               }}
-//             />
-//           </div>
-//         </div>
-//       </div> */}
-//     </div>
-//   );
-// }
-
 import { useContext, useEffect, useState } from "react";
 import { FaUserAlt } from "react-icons/fa";
 import axios from "axios";
-import { ThemeContext } from "../App";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
+import { ThemeContext } from "../App";
 
 const candidatesUrl = import.meta.env.VITE_CANDIDATES_URL;
 
 export default function Dashboard() {
   const { job } = useContext(ThemeContext);
-
   const [candidates, setCandidates] = useState([]);
+  const name = localStorage.getItem("username");
 
   useEffect(() => {
+    const fetchCandidates = async () => {
+      const response = await axios.get(candidatesUrl);
+      setCandidates(response.data);
+    };
+
     fetchCandidates();
   }, []);
 
-  const fetchCandidates = async () => {
-    const response = await axios.get(candidatesUrl);
-    setCandidates(response.data);
-  };
-
-  const name = localStorage.getItem("username");
+  const metrics = [
+    {
+      title: "Total jobs",
+      value: job?.length || 0,
+      tone: "from-blue-100 to-white",
+    },
+    {
+      title: "Candidates",
+      value: candidates?.length || 0,
+      tone: "from-emerald-100 to-white",
+    },
+    {
+      title: "Active roles",
+      value: job?.filter((item) => item.job_status === "Active").length || 0,
+      tone: "from-amber-100 to-white",
+    },
+    {
+      title: "Inactive roles",
+      value: job?.filter((item) => item.job_status === "Inactive").length || 0,
+      tone: "from-rose-100 to-white",
+    },
+  ];
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
-        <p className="absolute top-7 right-7 bg-blue-100 p-2 rounded-lg flex gap-2">
-          <FaUserAlt className="text-gray-700" />
-          {name}
-        </p>
-      </div>
-      <div className="grid grid-cols-2 gap-6">
-        <div className="p-4 bg-blue-100 rounded-lg shadow">
-          <h3 className="text-lg font-semibold">Total Jobs Posted </h3>
-          <p className="text-2xl">{job?.length}</p>
+    <div className="space-y-6">
+      <section className="admin-panel rounded-[32px] p-6 lg:p-8">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[var(--admin-accent-deep)]">
+              Dashboard
+            </p>
+            <h1 className="mt-3 text-3xl font-bold">Admin panel overview</h1>
+            <p className="mt-2 max-w-2xl text-sm leading-7 text-[var(--admin-muted)]">
+              Track role activity, candidate volume, and hiring status from one place.
+            </p>
+          </div>
+          <div className="inline-flex items-center gap-3 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[var(--admin-ink)] shadow-sm">
+            <FaUserAlt className="text-[var(--admin-accent)]" />
+            {name}
+          </div>
         </div>
-        <div className="p-4 bg-green-100 rounded-lg shadow">
-          <h3 className="text-lg font-semibold">Total Candidates</h3>
-          <p className="text-2xl">{candidates?.length}</p>
+      </section>
+
+      <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        {metrics.map((metric) => (
+          <article
+            key={metric.title}
+            className={`admin-card rounded-[28px] bg-gradient-to-br ${metric.tone} p-6`}
+          >
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--admin-muted)]">
+              {metric.title}
+            </p>
+            <h2 className="mt-4 text-4xl font-bold">{metric.value}</h2>
+          </article>
+        ))}
+      </section>
+
+      <section className="grid gap-6 xl:grid-cols-2">
+        <div className="admin-panel rounded-[32px] p-6">
+          <h2 className="text-xl font-bold">Hiring activity</h2>
+          <div className="mt-6 h-[340px]">
+            <Bar
+              data={{
+                labels: ["Roles", "Candidates", "Active", "Inactive"],
+                datasets: [
+                  {
+                    label: "Portal snapshot",
+                    backgroundColor: ["#1c5d99", "#12715b", "#ce7a12", "#b9382f"],
+                    borderRadius: 10,
+                    data: [
+                      job?.length || 0,
+                      candidates?.length || 0,
+                      job?.filter((item) => item.job_status === "Active").length || 0,
+                      job?.filter((item) => item.job_status === "Inactive").length || 0,
+                    ],
+                  },
+                ],
+              }}
+              options={{ maintainAspectRatio: false }}
+            />
+          </div>
         </div>
-        <div className="p-4 bg-yellow-100 rounded-lg shadow">
-          <h3 className="text-lg font-semibold">Active Jobs</h3>
-          <p className="text-2xl">
-            {job?.filter((j) => j.job_status === "Active").length}
-          </p>
+
+        <div className="grid gap-6">
+          <div className="admin-panel rounded-[32px] p-6">
+            <h2 className="text-xl font-bold">Role split</h2>
+            <div className="mt-6 h-[240px]">
+              <Doughnut
+                data={{
+                  labels: ["Active", "Inactive"],
+                  datasets: [
+                    {
+                      backgroundColor: ["#1c5d99", "#b9382f"],
+                      data: [
+                        job?.filter((item) => item.job_status === "Active").length || 0,
+                        job?.filter((item) => item.job_status === "Inactive").length || 0,
+                      ],
+                    },
+                  ],
+                }}
+                options={{ maintainAspectRatio: false }}
+              />
+            </div>
+          </div>
+          <div className="admin-panel rounded-[32px] p-6">
+            <h2 className="text-xl font-bold">Candidate trend view</h2>
+            <div className="mt-6 h-[220px]">
+              <Line
+                data={{
+                  labels: ["Jobs", "Candidates", "Active", "Inactive"],
+                  datasets: [
+                    {
+                      label: "Current totals",
+                      borderColor: "#1c5d99",
+                      backgroundColor: "rgba(28, 93, 153, 0.12)",
+                      tension: 0.4,
+                      fill: true,
+                      data: [
+                        job?.length || 0,
+                        candidates?.length || 0,
+                        job?.filter((item) => item.job_status === "Active").length || 0,
+                        job?.filter((item) => item.job_status === "Inactive").length || 0,
+                      ],
+                    },
+                  ],
+                }}
+                options={{ maintainAspectRatio: false }}
+              />
+            </div>
+          </div>
         </div>
-        <div className="p-4 bg-red-100 rounded-lg shadow">
-          <h3 className="text-lg font-semibold">Inactive Jobs</h3>
-          <p className="text-2xl">
-            {job?.filter((j) => j.job_status === "Inactive").length}
-          </p>
-        </div>
-      </div>
+      </section>
     </div>
   );
 }

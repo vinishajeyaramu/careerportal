@@ -1,17 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { Link, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import { FiArrowLeft, FiCheckCircle, FiUploadCloud } from "react-icons/fi";
+import { useAuth } from "../context/AuthContext";
 
 const candidatesUrl = import.meta.env.VITE_CANDIDATES_URL;
 
 function JobApplicationForm() {
-  const {id}=useParams();
-  const { jobtitle } = useParams();
-
-  console.log(jobtitle);
-
+  const { id, jobtitle } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { user, isAuthenticated, isCandidate, loading } = useAuth();
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -22,262 +21,256 @@ function JobApplicationForm() {
     website: "",
     resume: null,
     cover: null,
+    user_id: "",
     job_id: id,
     job_title: jobtitle,
   });
-
   const [errors, setErrors] = useState({});
   const [fileMessages, setFileMessages] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    const file = files[0];
-    if (file) {
-      if (file.type !== "application/pdf") {
-        setErrors({ ...errors, [name]: "Only PDF files are allowed" });
-        setFileMessages({ ...fileMessages, [name]: "" });
-      } else if (file.size > 5 * 1024 * 1024) {
-        setErrors({ ...errors, [name]: "File size should be less than 5MB" });
-        setFileMessages({ ...fileMessages, [name]: "" });
-      } else {
-        setErrors({ ...errors, [name]: "" });
-        setFormData({ ...formData, [name]: file });
-        setFileMessages({ ...fileMessages, [name]: "PDF has been uploaded" });
-      }
+  useEffect(() => {
+    if (!user || !isCandidate) {
+      return;
     }
+
+    const [firstName = "", ...restNames] = (user.username || "").split(" ");
+    setFormData((previous) => ({
+      ...previous,
+      first_name: previous.first_name || user.first_name || firstName,
+      last_name: previous.last_name || user.last_name || restNames.join(" "),
+      email: previous.email || user.email || "",
+      phone: previous.phone || user.phone || "",
+      user_id: user.id || "",
+    }));
+  }, [isCandidate, user]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
-  const validateLinkedIn = (url) => {
-    const regex = /^(https?:\/\/)?(www\.)?linkedin\.com\/.*$/;
-    return regex.test(url);
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    const file = files?.[0];
+    if (!file) {
+      return;
+    }
+
+    if (file.type !== "application/pdf") {
+      setErrors((previous) => ({ ...previous, [name]: "Only PDF files are allowed." }));
+      setFileMessages((previous) => ({ ...previous, [name]: "" }));
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setErrors((previous) => ({ ...previous, [name]: "File size should be less than 5MB." }));
+      setFileMessages((previous) => ({ ...previous, [name]: "" }));
+      return;
+    }
+
+    setErrors((previous) => ({ ...previous, [name]: "" }));
+    setFileMessages((previous) => ({ ...previous, [name]: `${file.name} ready to upload` }));
+    setFormData((previous) => ({ ...previous, [name]: file }));
   };
+
+  const validateLinkedIn = (url) => /^(https?:\/\/)?(www\.)?linkedin\.com\/.*$/i.test(url);
 
   const validateForm = () => {
-    const newErrors = {};
-    if (!formData.first_name) newErrors.first_name = "First name is required";
-    if (!formData.last_name) newErrors.last_name = "Last name is required ";
-    if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.phone) newErrors.phone = "Phone number is required";
-    if (!formData.linkedin) {
-      newErrors.linkedin = "LinkedIn profile is required";
-    } else if (!validateLinkedIn(formData.linkedin)) {
-      newErrors.linkedin = "Please enter a valid LinkedIn profile URL";
-    }
-    if (!formData.website) newErrors.website = "Website is required";
+    const nextErrors = {};
 
-    if (!formData.resume) newErrors.resume = "Resume is required";
-    if (!formData.cover) newErrors.cover = "Cover letter is required";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    if (!formData.first_name) nextErrors.first_name = "First name is required.";
+    if (!formData.last_name) nextErrors.last_name = "Last name is required.";
+    if (!formData.email) nextErrors.email = "Email is required.";
+    if (!formData.phone) nextErrors.phone = "Phone number is required.";
+    if (!formData.linkedin) {
+      nextErrors.linkedin = "LinkedIn profile is required.";
+    } else if (!validateLinkedIn(formData.linkedin)) {
+      nextErrors.linkedin = "Enter a valid LinkedIn profile URL.";
+    }
+    if (!formData.website) nextErrors.website = "Portfolio or website is required.";
+    if (!formData.resume) nextErrors.resume = "Resume is required.";
+    if (!formData.cover) nextErrors.cover = "Cover letter is required.";
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
 
-    const data = new FormData();
+    const payload = new FormData();
     Object.keys(formData).forEach((key) => {
-      data.append(key, formData[key]);
+      payload.append(key, formData[key]);
     });
 
     try {
-      await axios.post(candidatesUrl, data);
-      setFormData({
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: "",
-        linkedin: "",
-        website: "",
-        resume: null,
-        cover: null,
-        job_id: id,
-        job_title: jobtitle,
-      });
+      setSubmitting(true);
+      await axios.post(candidatesUrl, payload);
       navigate("/success");
     } catch (err) {
-      if (err.response && err.response.status === 500) {
-        setErrors({ ...errors, email: "Email already exists" });
+      if (err.response?.status === 409) {
+        setErrors((previous) => ({ ...previous, form: "You have already applied for this job." }));
       } else {
-        console.error(err);
-        setErrors({ ...errors, form: "Failed to submit application" });
+        setErrors((previous) => ({
+          ...previous,
+          form: err.response?.data || "Failed to submit application.",
+        }));
       }
+    } finally {
+      setSubmitting(false);
     }
   };
 
+  const fieldClassName =
+    "w-full rounded-2xl border border-[var(--line)] bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--accent)]";
+
+  if (loading) {
+    return null;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/signin" state={{ redirectTo: location.pathname }} replace />;
+  }
+
+  if (!isCandidate) {
+    return (
+      <main className="portal-shell py-12">
+        <section className="glass-panel rounded-[34px] p-10 text-center">
+          <h1 className="text-3xl font-bold">Only candidate accounts can apply for jobs.</h1>
+          <p className="mt-4 text-[var(--muted)]">
+            Admin users can manage openings from the admin panel, while candidate accounts can submit applications here.
+          </p>
+        </section>
+      </main>
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-5 p-4 mx-auto items-center justify-center">
-      <NavLink to={`/job/${id}/${jobtitle}`} className="text-red-600 flex items-center">
-        <ArrowBackIosIcon /> <p>Back to Job Description</p>
-      </NavLink>
-      <h2 className="lg:text-3xl text-2xl text-gray-600 font-bold">
-        {jobtitle}
-      </h2>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-5 w-full max-w-lg"
+    <main className="portal-shell py-10">
+      <Link
+        to={`/job/${id}/${jobtitle}`}
+        className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent-deep)]"
       >
-        <div className="flex flex-col gap-5">
-          <h3 className="text-2xl font-bold">Personal Information</h3>
+        <FiArrowLeft />
+        Back to role details
+      </Link>
 
-          <div className="flex flex-col md:flex-row items-center gap-5">
-            <div className="relative mb-6 w-full">
-              <label className="flex items-center mb-2 text-gray-600 text-sm font-medium">
-                First Name*
-              </label>
-              <input
-                type="text"
-                name="first_name"
-                value={formData.first_name}
-                onChange={handleChange}
-                className="block w-full h-11 px-5 py-2.5 bg-white drop-shadow-lg leading-7 text-base font-normal text-gray-900 bg-transparent border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none"
-              />
-              {errors.first_name && (
-                <p className="text-red-500 text-sm">{errors.first_name}</p>
-              )}
-            </div>
-            <div className="relative mb-6 w-full">
-              <label className="flex items-center mb-2 text-gray-600 text-sm font-medium">
-                Last Name*
-              </label>
-              <input
-                type="text"
-                name="last_name"
-                value={formData.last_name}
-                onChange={handleChange}
-                className="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal drop-shadow-lg text-gray-900 bg-transparent border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none"
-              />
-              {errors.last_name && (
-                <p className="text-red-500 text-sm">{errors.last_name}</p>
-              )}
-            </div>
+      <section className="mt-6 grid gap-6 lg:grid-cols-[0.7fr_1.3fr]">
+        <aside className="glass-panel rounded-[34px] p-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--accent-deep)]">
+            Application
+          </p>
+          <h1 className="mt-4 text-4xl font-bold text-balance">{jobtitle}</h1>
+          <p className="mt-5 text-sm leading-7 text-[var(--muted)]">
+            Send the details your hiring team needs in one place. Resume and cover letter
+            uploads are limited to PDF files up to 5MB each.
+          </p>
+
+          <div className="mt-8 space-y-4">
+            {[
+              "Personal information",
+              "Resume and cover letter",
+              "LinkedIn and portfolio links",
+            ].map((item) => (
+              <div key={item} className="flex items-center gap-3 rounded-2xl bg-white/80 p-4">
+                <FiCheckCircle className="text-[var(--accent)]" />
+                <span className="text-sm font-semibold text-[var(--muted)]">{item}</span>
+              </div>
+            ))}
           </div>
-          <div className="flex flex-col md:flex-row items-center gap-5">
-            <div className="relative mb-6 w-full">
-              <label className="flex items-center mb-2 text-gray-600 text-sm font-medium">
-                Email*
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal drop-shadow-lg text-gray-900 bg-transparent border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none"
-                
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
-              )}
+        </aside>
+
+        <form onSubmit={handleSubmit} className="glass-panel rounded-[34px] p-8 lg:p-10">
+          <div className="grid gap-5 md:grid-cols-2">
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-[var(--muted)]">First name</label>
+              <input className={fieldClassName} name="first_name" value={formData.first_name} onChange={handleChange} />
+              {errors.first_name && <p className="mt-2 text-sm text-red-600">{errors.first_name}</p>}
             </div>
-            <div className="relative mb-6 w-full">
-              <label className="flex items-center mb-2 text-gray-600 text-sm font-medium">
-                Phone*
-              </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                pattern="[0-9]{10}"
-                className="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal drop-shadow-lg text-gray-900 bg-transparent border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none"
-                
-              />
-              {errors.phone && (
-                <p className="text-red-500 text-sm">{errors.phone}</p>
-              )}
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-[var(--muted)]">Last name</label>
+              <input className={fieldClassName} name="last_name" value={formData.last_name} onChange={handleChange} />
+              {errors.last_name && <p className="mt-2 text-sm text-red-600">{errors.last_name}</p>}
+            </div>
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-[var(--muted)]">Email</label>
+              <input className={fieldClassName} type="email" name="email" value={formData.email} onChange={handleChange} />
+              {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email}</p>}
+            </div>
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-[var(--muted)]">Phone</label>
+              <input className={fieldClassName} type="tel" name="phone" value={formData.phone} onChange={handleChange} />
+              {errors.phone && <p className="mt-2 text-sm text-red-600">{errors.phone}</p>}
             </div>
           </div>
-        </div>
 
-        <div className="relative mb-6">
-          <label className="flex items-center mb-2 text-gray-600 text-sm font-medium">
-            Resume/CV*
-          </label>
-          <input
-            type="file"
-            name="resume"
-            onChange={handleFileChange}
-            className="text-gray-500 font-medium w-full text-base file:cursor-pointer cursor-pointer file:text-black border file:py-2.5 file:px-4 file:mr-4 file:bg-gray-200 file:hover:bg-gray-700 rounded"
-            
-          />
-          {errors.resume && (
-            <p className="text-red-500 text-sm">{errors.resume}</p>
-          )}
-          {fileMessages.resume && (
-            <p className="text-green-500 text-sm">{fileMessages.resume}</p>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-5">
-          <h3 className="text-2xl font-bold">Additional Information</h3>
-
-          <div className="relative mb-6">
-            <label className="flex items-center mb-2 text-gray-600 text-sm font-medium">
-              Cover Letter
-            </label>
-            <input
-              type="file"
-              name="cover"
-              onChange={handleFileChange}
-              className="text-gray-500 font-medium w-full text-base file:cursor-pointer cursor-pointer file:text-black file:border-0 file:py-2.5 file:px-4 file:mr-4 file:bg-gray-200 file:hover:bg-gray-700 rounded border"
-            />
-            {errors.cover && (
-              <p className="text-red-500 text-sm">{errors.cover}</p>
-            )}
-            {fileMessages.cover && (
-              <p className="text-green-500 text-sm">{fileMessages.cover}</p>
-            )}
+          <div className="mt-6 grid gap-5 md:grid-cols-2">
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-[var(--muted)]">LinkedIn profile</label>
+              <input
+                className={fieldClassName}
+                type="url"
+                name="linkedin"
+                value={formData.linkedin}
+                onChange={handleChange}
+                placeholder="https://linkedin.com/in/your-profile"
+              />
+              {errors.linkedin && <p className="mt-2 text-sm text-red-600">{errors.linkedin}</p>}
+            </div>
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-[var(--muted)]">Portfolio or website</label>
+              <input
+                className={fieldClassName}
+                type="url"
+                name="website"
+                value={formData.website}
+                onChange={handleChange}
+                placeholder="https://yourportfolio.com"
+              />
+              {errors.website && <p className="mt-2 text-sm text-red-600">{errors.website}</p>}
+            </div>
           </div>
-          <div className="relative mb-6 w-full">
-            <label className="flex items-center mb-2 text-gray-600 text-sm font-medium">
-              LinkedIn Profile*
-            </label>
-            <input
-              type="url"
-              name="linkedin"
-              placeholder="Please mention your LinkedIn profile"
-              value={formData.linkedin}
-              onChange={handleChange}
-              className="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal drop-shadow-lg text-gray-900 bg-transparent border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none"
-              
-            />
-            {errors.linkedin && (
-              <p className="text-red-500 text-sm">{errors.linkedin}</p>
-            )}
-          </div>
-          <div className="relative mb-6 w-full">
-            <label className="flex items-center mb-2 text-gray-600 text-sm font-medium">
-              Website
-            </label>
-            <input
-              type="url"
-              name="website"
-              placeholder="Please mention your website"
-              value={formData.website}
-              onChange={handleChange}
-              className="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal drop-shadow-lg text-gray-900 bg-transparent border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none"
-            />
-             {errors.website && (
-              <p className="text-red-500 text-sm">{errors.website}</p>
-            )}
-          </div>
-        </div>
 
-        <div>
+          <div className="mt-6 grid gap-5 md:grid-cols-2">
+            {[
+              { name: "resume", label: "Resume / CV" },
+              { name: "cover", label: "Cover letter" },
+            ].map((field) => (
+              <div key={field.name} className="rounded-[28px] border border-dashed border-[var(--line)] bg-white/70 p-5">
+                <label className="mb-3 block text-sm font-semibold text-[var(--muted)]">{field.label}</label>
+                <div className="flex items-center gap-3 text-sm text-[var(--muted)]">
+                  <FiUploadCloud className="text-[var(--accent)]" />
+                  PDF only, max 5MB
+                </div>
+                <input className="mt-4 block w-full text-sm" type="file" name={field.name} onChange={handleFileChange} />
+                {errors[field.name] && <p className="mt-2 text-sm text-red-600">{errors[field.name]}</p>}
+                {fileMessages[field.name] && (
+                  <p className="mt-2 text-sm text-green-700">{fileMessages[field.name]}</p>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {errors.form && <p className="mt-5 text-sm text-red-600">{errors.form}</p>}
+
           <button
             type="submit"
-            className="md:w-52 w-full h-12 bg-red-600 hover:bg-red-800 transition-all duration-700 rounded-md drop-shadow-lg text-white text-base font-semibold leading-6 mb-6"
+            disabled={submitting}
+            className={`mt-8 inline-flex items-center justify-center rounded-full px-6 py-4 text-sm font-semibold ${
+              submitting
+                ? "cursor-not-allowed bg-gray-300 text-gray-700"
+                : "bg-[var(--ink)] text-white transition hover:bg-[var(--accent-deep)]"
+            }`}
           >
-            Apply
+            {submitting ? "Submitting application..." : "Submit application"}
           </button>
-        </div>
-      </form>
-    </div>
+        </form>
+      </section>
+    </main>
   );
 }
 

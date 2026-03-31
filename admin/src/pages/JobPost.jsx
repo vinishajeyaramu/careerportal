@@ -90,7 +90,7 @@ function JobPost() {
       name: "Candidates",
       cell: (row) => (
         <button
-          className="border-blue-500 text-blue-500 border-2 p-[3px] rounded-md"
+          className="admin-btn admin-btn-secondary px-3 py-2 text-xs"
           onClick={() => handleViewCandidates(row.job_id)}
         >
           View Candidates
@@ -102,15 +102,15 @@ function JobPost() {
     {
       name: "Actions",
       cell: (row) => (
-        <div className="space-x-5">
+        <div className="flex gap-3">
           <button
-            className="  rounded-md  border-green-500  border-2 p-[3px] text-green-600 hover:text-green-800"
+            className="admin-icon-btn text-[var(--admin-success)]"
             onClick={() => handleEdit(row)}
           >
             <Edit size={15} />
           </button>
           <button
-            className="border-blue-500 text-blue-500 border-2 p-[3px] rounded-md"
+            className="admin-icon-btn text-[var(--admin-accent)]"
             onClick={() => handleView(row.job_id)}
           >
             <Eye size={15} />
@@ -256,7 +256,7 @@ function JobPost() {
       name: "Resume",
       cell: (row) => (
         <a
-          className="border-blue-500 text-blue-500 border-2 p-[3px] rounded-md"
+          className="admin-btn admin-btn-secondary px-3 py-2 text-xs"
           href={`${uploadsUrl}/${row.resume}`}
           target="_blank"
           rel="noopener noreferrer"
@@ -270,7 +270,7 @@ function JobPost() {
       name: "Cover Letter",
       cell: (row) => (
         <a
-          className="border-blue-500 text-blue-500 border-2 p-[3px] rounded-md"
+          className="admin-btn admin-btn-secondary px-3 py-2 text-xs"
           href={`${uploadsUrl}/${row.cover}`}
           target="_blank"
           rel="noopener noreferrer"
@@ -283,26 +283,31 @@ function JobPost() {
   ];
 
   return (
-    <div className="px-6  bg-gray-100 rounded-md ">
+    <div className="admin-page-shell space-y-6">
       <ToastContainer />
-      <div className="flex  justify-center items-center bg-slate-100">
-        <div className="flex pt-6 flex-col  h-auto w-full   px-6 shadow-lg   rounded-xl  bg-white">
-          <div className="flex justify-between p-4">
-            <h1 className="text-2xl font-bold">JobPost</h1>
+      <div className="admin-panel rounded-[32px] p-6">
+        <div className="flex pt-2 flex-col h-auto w-full">
+          <div className="flex flex-col gap-4 p-2 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">Job Posts</h1>
+              <p className="mt-2 text-sm text-[var(--admin-muted)]">
+                Manage open roles, review records, and inspect candidate lists without losing action visibility.
+              </p>
+            </div>
 
-            <div className="flex gap-5">
-              <div className="">
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="flex gap-2">
                 <input
                   id="search"
                   type="text"
-                  className=" border-2 p-1 rounded-lg "
+                  className="admin-input !w-56 !py-3"
                   placeholder="Filter By Name"
                   aria-label="Search Input"
                   value={filterText}
                   onChange={onFilter}
                 />
                 <button
-                  className="bg-black rounded-lg text-white border-2 p-1"
+                  className="admin-btn admin-btn-secondary min-w-[92px]"
                   type="button"
                   onClick={handleClear}
                 >
@@ -310,7 +315,7 @@ function JobPost() {
                 </button>
               </div>
               <button
-                className="w-40 rounded-lg h-8 flex bg-black text-white justify-center items-center"
+                className="admin-btn admin-btn-primary min-h-[52px] min-w-[170px]"
                 onClick={handleOpen}
               >
                 Create JobPost
@@ -320,7 +325,7 @@ function JobPost() {
 
           {ok && (
             <div className="z-50 absolute  h-full w-max flex  justify-center  pt-5 top-0 left-0">
-              <div className=" w-[400px] h-[200px] flex flex-col gap-5 items-center justify-center bg-blue-300 rounded-3xl">
+              <div className="admin-card w-[400px] h-[220px] flex flex-col gap-5 items-center justify-center rounded-[28px] px-6 text-center">
                 <h1>Are you sure you want to delete this product?</h1>
                 <div className=" flex gap-4">
                   <button
@@ -328,13 +333,13 @@ function JobPost() {
                       handleDeleteItem(id);
                       setOk(false);
                     }}
-                    className=" px-4 py-2 rounded-xl bg-red-700"
+                    className="admin-btn admin-btn-danger"
                   >
                     Yes
                   </button>
                   <button
                     onClick={() => setOk(false)}
-                    className=" px-4 py-2 rounded-xl bg-blue-500"
+                    className="admin-btn admin-btn-secondary"
                   >
                     No
                   </button>
@@ -343,7 +348,7 @@ function JobPost() {
             </div>
           )}
 
-          <div>
+          <div className="admin-table-wrap mt-4">
             <DataTable
               columns={columns}
               data={filteredItems}
@@ -358,28 +363,30 @@ function JobPost() {
             isOpen={viewCandidate}
             onRequestClose={() => setViewCandidate(false)}
             contentLabel="Candidates Modal"
-            className="fixed inset-0 flex items-center justify-center z-50"
+            className="fixed inset-0 z-50 flex items-center justify-center px-4"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50"
           >
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
+            <div className="admin-panel w-full max-w-4xl rounded-[28px] p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold">Candidates</h2>
                 <button
                   onClick={() => setViewCandidate(false)}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="admin-icon-btn text-[var(--admin-muted)]"
                 >
                   <CloseIcon />
                 </button>
               </div>
               <hr />
-              <DataTable
-                columns={candidateColumns}
-                data={jobCandidates}
-                pagination
-                paginationPerPage={10}
-                paginationRowsPerPageOptions={[10]}
-                customStyles={customStyles}
-              />
+              <div className="admin-table-wrap mt-4">
+                <DataTable
+                  columns={candidateColumns}
+                  data={jobCandidates}
+                  pagination
+                  paginationPerPage={10}
+                  paginationRowsPerPageOptions={[10]}
+                  customStyles={customStyles}
+                />
+              </div>
             </div>
           </Modal>
         </div>

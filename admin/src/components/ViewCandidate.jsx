@@ -18,14 +18,14 @@ const ViewCandidate = ({ id, setViewId }) => {
   }, [id]);
 
   return (
-    <div className="p-6 mx-auto max-w-4xl">
+    <div className="space-y-6 p-1 mx-auto max-w-4xl">
       <button
         onClick={() => setViewId("")}
-        className="flex items-center px-4 py-2 mb-6 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition duration-300"
+        className="admin-btn admin-btn-primary"
       >
         <ArrowLeft className="mr-2" /> Back
       </button>
-      <div className="p-6 bg-white shadow-lg rounded-2xl">
+      <div className="admin-panel rounded-[32px] p-6">
         <div className="flex items-center space-x-6 mb-6">
           <div>
             <h2 className="text-3xl font-bold text-gray-800">
@@ -37,7 +37,7 @@ const ViewCandidate = ({ id, setViewId }) => {
 
         <div className="mb-6">
           <h3 className="text-xl font-semibold text-gray-800">LinkedIn</h3>
-          <p className="text-blue-600 mt-2">
+          <p className="mt-2 text-[var(--admin-accent)]">
             <a
               href={candidateData?.linkedin}
               target="_blank"
@@ -50,7 +50,7 @@ const ViewCandidate = ({ id, setViewId }) => {
 
         <div className="mb-6">
           <h3 className="text-xl font-semibold text-gray-800">Website</h3>
-          <p className="text-blue-600 mt-2">
+          <p className="mt-2 text-[var(--admin-accent)]">
             <a
               href={candidateData?.website}
               target="_blank"
@@ -69,7 +69,7 @@ const ViewCandidate = ({ id, setViewId }) => {
 
         <div className="mb-6">
           <h3 className="text-xl font-semibold text-gray-800">Documents</h3>
-          <p className="text-blue-600 mt-2">
+          <p className="mt-2 text-[var(--admin-accent)]">
             <a
               href={`${uploadsUrl}/${candidateData?.resume}`}
               download={`${uploadsUrl}/${candidateData?.resume}`}
@@ -79,7 +79,7 @@ const ViewCandidate = ({ id, setViewId }) => {
               Resume
             </a>
           </p>
-          <p className="text-blue-600">
+          <p className="text-[var(--admin-accent)]">
             <a
               href={`${uploadsUrl}/${candidateData?.cover}`}
               download={`${uploadsUrl}/${candidateData?.cover}`}
