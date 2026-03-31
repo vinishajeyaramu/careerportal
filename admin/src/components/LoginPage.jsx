@@ -76,6 +76,11 @@ const Login = () => {
           <p className="mt-2 text-sm text-[var(--admin-muted)]">
             Use your admin credentials to access the panel.
           </p>
+          <div className="mt-4 rounded-2xl border border-[var(--admin-line)] bg-[var(--admin-surface-soft)] px-4 py-3 text-sm">
+            <p className="font-semibold text-[var(--admin-ink)]">Admin login hint</p>
+            <p className="mt-1 text-[var(--admin-muted)]">Email: `admincareer@gmail.com`</p>
+            <p className="text-[var(--admin-muted)]">Password: `admin@career`</p>
+          </div>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div>

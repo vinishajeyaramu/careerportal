@@ -67,9 +67,9 @@ const Navbar = () => {
 
             {isAuthenticated ? (
               <>
-                <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">
+                <div className="inline-flex max-w-[220px] items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">
                   <FiUser className="text-[var(--brand)]" />
-                  {user?.username || user?.email}
+                  <span className="truncate">{user?.username || user?.email}</span>
                 </div>
                 <button type="button" onClick={logout} className="secondary-cta">
                   <FiLogOut />

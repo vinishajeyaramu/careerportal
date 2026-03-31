@@ -9,8 +9,8 @@ const router = express.Router();
 
 const DEFAULT_USER = {
   username: "admin@admin",
-  email: process.env.EMAIL_USER,
-  password: process.env.EMAIL_PASS,
+  email: process.env.ADMIN_EMAIL || "admincareer@gmail.com",
+  password: process.env.ADMIN_PASSWORD || "admin@career",
 };
 
 const signToken = (user) =>

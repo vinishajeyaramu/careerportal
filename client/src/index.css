@@ -37,8 +37,21 @@ body {
   color: var(--ink);
 }
 
+html,
+body,
+#root {
+  overflow-x: hidden;
+}
+
 a {
   text-decoration: none;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
 }
 
 #root {
@@ -368,6 +381,177 @@ h6 {
 @media (max-width: 1023px) {
   .search-sidebar {
     position: static;
+  }
+}
+
+@media (max-width: 767px) {
+  .portal-shell {
+    width: min(100%, calc(100% - 1rem));
+  }
+
+  .top-strip .portal-shell {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .top-strip p {
+    width: 100%;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .brand-mark {
+    height: 2.6rem;
+    width: 2.6rem;
+    border-radius: 0.9rem;
+    font-size: 1.05rem;
+  }
+
+  .section-kicker {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.64rem;
+    letter-spacing: 0.16em;
+  }
+
+  .primary-cta,
+  .secondary-cta {
+    justify-content: center;
+    padding: 0.9rem 1.15rem;
+    font-size: 0.9rem;
+  }
+
+  .hero-shell {
+    padding: 2rem 0 1.25rem;
+  }
+
+  .hero-card,
+  .hero-search-box,
+  .job-card,
+  .search-sidebar,
+  .auth-panel,
+  .auth-card {
+    padding: 1rem;
+  }
+
+  .hero-search-box,
+  .hero-card,
+  .job-card,
+  .search-sidebar,
+  .auth-panel,
+  .auth-card,
+  .glass-panel,
+  .category-card,
+  .hero-mini-card,
+  .hero-stat,
+  .info-tile {
+    border-radius: 1.35rem;
+  }
+
+  .search-pill {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    border-radius: 1rem;
+    padding: 0.9rem 1rem;
+    line-height: 1.5;
+  }
+
+  .company-strip {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .company-pill {
+    padding: 0.9rem;
+    font-size: 0.92rem;
+  }
+
+  .job-card-side {
+    min-width: 0;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .tag-chip,
+  .job-badge,
+  .job-badge-muted {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.76rem;
+  }
+
+  .role-switch {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .role-chip {
+    flex: 1 1 140px;
+    text-align: center;
+  }
+
+  .input-shell {
+    padding: 0.85rem 0.9rem;
+  }
+}
+
+@media (max-width: 639px) {
+  h1 {
+    word-break: break-word;
+  }
+
+  .hero-shell h1 {
+    font-size: 2.3rem;
+    line-height: 1.08;
+  }
+
+  .job-card h3,
+  .auth-panel h1,
+  .auth-card h1 {
+    font-size: 1.8rem;
+    line-height: 1.15;
+  }
+
+  .company-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .search-sidebar {
+    top: 0;
+  }
+}
+
+@media (max-width: 479px) {
+  .portal-shell {
+    width: min(100%, calc(100% - 0.75rem));
+  }
+
+  .hero-shell h1 {
+    font-size: 2rem;
+  }
+
+  .primary-cta,
+  .secondary-cta {
+    width: 100%;
+  }
+
+  .job-card,
+  .search-sidebar,
+  .auth-panel,
+  .auth-card,
+  .hero-card,
+  .hero-search-box {
+    padding: 0.9rem;
+  }
+
+  .section-kicker {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .top-strip .portal-shell {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
   }
 }
 

@@ -139,7 +139,7 @@ function JobApplicationForm() {
   if (!isCandidate) {
     return (
       <main className="portal-shell py-12">
-        <section className="glass-panel rounded-[34px] p-10 text-center">
+        <section className="glass-panel rounded-[34px] p-6 sm:p-10 text-center">
           <h1 className="text-3xl font-bold">Only candidate accounts can apply for jobs.</h1>
           <p className="mt-4 text-[var(--muted)]">
             Admin users can manage openings from the admin panel, while candidate accounts can submit applications here.
@@ -160,11 +160,11 @@ function JobApplicationForm() {
       </Link>
 
       <section className="mt-6 grid gap-6 lg:grid-cols-[0.7fr_1.3fr]">
-        <aside className="glass-panel rounded-[34px] p-8">
+        <aside className="glass-panel rounded-[34px] p-5 sm:p-8">
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--accent-deep)]">
             Application
           </p>
-          <h1 className="mt-4 text-4xl font-bold text-balance">{jobtitle}</h1>
+          <h1 className="mt-4 text-3xl font-bold text-balance sm:text-4xl">{jobtitle}</h1>
           <p className="mt-5 text-sm leading-7 text-[var(--muted)]">
             Send the details your hiring team needs in one place. Resume and cover letter
             uploads are limited to PDF files up to 5MB each.
@@ -184,7 +184,7 @@ function JobApplicationForm() {
           </div>
         </aside>
 
-        <form onSubmit={handleSubmit} className="glass-panel rounded-[34px] p-8 lg:p-10">
+        <form onSubmit={handleSubmit} className="glass-panel rounded-[34px] p-5 sm:p-8 lg:p-10">
           <div className="grid gap-5 md:grid-cols-2">
             <div>
               <label className="mb-2 block text-sm font-semibold text-[var(--muted)]">First name</label>

@@ -80,7 +80,7 @@ const JobDetail = () => {
 
       <section className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="space-y-6">
-          <div className="glass-panel rounded-[34px] p-8 lg:p-10">
+          <div className="glass-panel rounded-[34px] p-5 sm:p-8 lg:p-10">
             <div className="flex flex-wrap items-center gap-3">
               <span className="rounded-full bg-[var(--accent-soft)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--accent-deep)]">
                 {jobDetail.job_category || "Open role"}
@@ -90,7 +90,7 @@ const JobDetail = () => {
               </span>
             </div>
 
-            <h1 className="mt-5 text-balance text-4xl font-bold md:text-5xl">{jobDetail.job_title}</h1>
+            <h1 className="mt-5 text-balance text-3xl font-bold md:text-5xl">{jobDetail.job_title}</h1>
 
             <div className="mt-5 flex flex-wrap gap-4 text-sm text-[var(--muted)]">
               <span className="inline-flex items-center gap-2">
@@ -131,7 +131,7 @@ const JobDetail = () => {
             </div>
           </div>
 
-          <div className="glass-panel rounded-[34px] p-8 lg:p-10">
+          <div className="glass-panel rounded-[34px] p-5 sm:p-8 lg:p-10">
             <h2 className="text-2xl font-bold">About this job</h2>
             <div
               className="prose prose-neutral mt-5 max-w-none text-[var(--muted)] prose-p:leading-8 prose-li:leading-8"
@@ -139,7 +139,7 @@ const JobDetail = () => {
             />
           </div>
 
-          <div className="glass-panel rounded-[34px] p-8">
+          <div className="glass-panel rounded-[34px] p-5 sm:p-8">
             <h2 className="text-2xl font-bold">Required skills</h2>
             <div className="mt-5 flex flex-wrap gap-2">
               {(jobDetail.job_technical_skills || []).map((skill) => (
@@ -155,7 +155,7 @@ const JobDetail = () => {
         </div>
 
         <aside className="space-y-6">
-          <div className="glass-panel sticky top-24 rounded-[34px] p-8">
+          <div className="glass-panel sticky top-24 rounded-[34px] p-5 sm:p-8">
             <h2 className="text-2xl font-bold">Job overview</h2>
 
             <dl className="mt-6 space-y-5">

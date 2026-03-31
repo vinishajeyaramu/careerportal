@@ -1,6 +1,12 @@
 import client from "./connectdatabase.js";
 import bcrypt from "bcrypt";
 
+const defaultAdminCredentials = {
+  username: "admin@admin",
+  email: process.env.ADMIN_EMAIL || "admincareer@gmail.com",
+  password: process.env.ADMIN_PASSWORD || "admin@career",
+};
+
 const seedLocations = ["Bengaluru", "Chennai", "Hyderabad", "Pune", "Remote"];
 
 const seedCategories = [
@@ -137,24 +143,30 @@ const ensureTables = async () => {
 };
 
 const ensureDefaultAdmin = async () => {
-  const defaultEmail = process.env.EMAIL_USER;
-  const defaultPassword = process.env.EMAIL_PASS;
+  const defaultEmail = defaultAdminCredentials.email;
+  const defaultPassword = defaultAdminCredentials.password;
 
   if (!defaultEmail || !defaultPassword) {
     return;
   }
 
-  const { rows } = await client.query("SELECT id FROM users WHERE email = $1", [defaultEmail]);
+  const { rows } = await client.query(
+    "SELECT id, email FROM users WHERE role = 'admin' ORDER BY id ASC LIMIT 1"
+  );
+
+  const hashedPassword = await bcrypt.hash(defaultPassword, 10);
 
   if (rows.length > 0) {
-    await client.query("UPDATE users SET role = 'admin' WHERE email = $1", [defaultEmail]);
+    await client.query(
+      "UPDATE users SET username = $1, email = $2, password = $3, role = 'admin' WHERE id = $4",
+      [defaultAdminCredentials.username, defaultEmail, hashedPassword, rows[0].id]
+    );
     return;
   }
 
-  const hashedPassword = await bcrypt.hash(defaultPassword, 10);
   await client.query(
     "INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4)",
-    ["admin@admin", defaultEmail, hashedPassword, "admin"]
+    [defaultAdminCredentials.username, defaultEmail, hashedPassword, "admin"]
   );
 };
 
